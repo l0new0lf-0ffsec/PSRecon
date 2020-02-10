@@ -1,16 +1,18 @@
 # PSRecon
+**Note: Would not recommend upgrade on issued VM**
 This PSCore automation tool is built for reconnaissance automation toward the OSCP. 
-I'm currently developing the tool..
-**Note: Wouldn't recommend on Issued VM**
+- Currently building through lab..
 
-### Requirements:
 
-##### PSCore (v6.2 tested)
-After Nov 2019 Install:
+### Requirements : 
+**(needs to be tested more)**
+
+#### PSCore (v6.2 tested)
+###### After Nov 2019 Install:
 ```
 apt -y install powershell
 ```
-Before Nov 2019 Install:
+###### Before Nov 2019 Install:
 ```
 apt -y install curl gnupg apt-transport-https
 curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
@@ -18,15 +20,15 @@ echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-str
 apt update
 apt -y install powershell
 ```
-##### dnsrecon
-Install:
+#### dnsrecon
+###### Install:
 ```
 apt install libavahi-compat-libdnssd1 -y
 apt install python-setuptools -y
 ```
 
-##### masscan
-Install:
+#### masscan
+###### Install:
 
 ```
 apt install gcc make libpcap-dev -y
