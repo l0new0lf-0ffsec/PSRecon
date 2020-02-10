@@ -1,7 +1,10 @@
 # PSRecon
-### **Note: Would not recommend upgrade on issued VM**
+
+###### **Note: Would not recommend upgrade on issued VM**
+
 ###### This PSCore automation tool is built for reconnaissance automation toward the OSCP. 
 ###### - Currently building through lab..
+
 
 
 ### Requirements : 
