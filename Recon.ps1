@@ -5,13 +5,13 @@
 ##########################################
 
 #region Input
-$Subnet = '10.11.1' # ex. 'xx.xx.xx'
-$Adapter = 'tap0' # ex. 'tap0'
-$Rate = 5000 # masscan (test to find best)
+$Subnet = '' # (ex: 'xx.xx.xx')
+$Adapter = '' # (ex: 'tap0')
+$Rate = '' # (ex: '5000')
 #endregion Input
 
-$Root = "$Home/Desktop/PSRecon"
-$JSON_Report = "$Root/PSScan.json"
+$Root = "$Home/Desktop/PSRecon" # Root for temp and report locations
+$JSON_Report = "$Root/PSRecon.json" # JSON report location
 
 ##########################################
 
@@ -36,7 +36,7 @@ if (-not $Subnet) {
 #region Verification
 
 $IP = [string](ifconfig $Adapter | grep 'inet' | cut -d: -f2 | awk '{ print $2}')
-$RouterIP = [string]( ((($IP).split('.')[1..3]) -join '.').trim() + '.1')
+$RouterIP = [string]( ((($IP).split('.')[0..2]) -join '.').trim() + '.1')
 $AutoTitle = @"
 ########################################################
 #                 OSCP | PSCore Recon                  #
@@ -44,9 +44,10 @@ $AutoTitle = @"
 ########################################################
 "@
 Clear-Host
+
 # Create or Load Environment
-if (Test-Path "$Root/Network-Scan.json") {
-    $Network_Scan = Get-Content "$Root/Network-Scan.json" | ConvertFrom-Json
+if (Test-Path "$JSON_Report") {
+    $Network_Scan = Get-Content "$JSON_Report" | ConvertFrom-Json
 }
 if (($Network_Scan.Scan).count -eq 0) {
     Write-Host "$AutoTitle`n`nSetting Up Environment`nPlease Wait.."
@@ -104,7 +105,7 @@ if (($Network_Scan.Scan).count -eq 0) {
     }
 }
 else {
-    Write-Host "$AutoTitle`n`nFound Environment.."
+    Write-Host "$AutoTitle`n`nEnvironment Found.."
 }
 
 ### Scan
@@ -118,7 +119,7 @@ foreach ($System in $Network_Scan.Scan) {
     Write-Host "($c/$t) Scan In Progress..`nTarget: $($System.Name)`nIP: $($System.IP)`n"
 
     # Port Scan
-    masscan $System.IP -c base.conf --rate $Rate --router-ip $RouterIP -e "$Adapter" `
+    masscan $System.IP -c base.conf --max-rate $Rate --router-ip $RouterIP -e $Adapter `
         -oJ "$Root/temp/$($System.Name).json"
     $MasScan = Get-Content "$Root/temp/$($System.Name).json" | ConvertFrom-Json
     Remove-Item "$Root/temp/$($System.Name).json" -Force
